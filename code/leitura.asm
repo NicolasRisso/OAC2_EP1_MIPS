@@ -1,9 +1,8 @@
 .data
   # Caminhos dos arquivos
-  xtrain: .asciiz "data/xtrain.txt"
-  ytrain: .asciiz "data/ytrain.txt"
-  xtest: .asciiz "data/xtest.txt"
-  ytest: .asciiz "xtest.txt"
+  pathXTrain: .asciiz "data/xtrain.txt"
+  pathYTrain: .asciiz "data/ytrain.txt"
+  pathXTest: .asciiz "data/xtest.txt"
   
   # Armazenar o conteúdo
   spaceX: .space 17040
@@ -18,13 +17,11 @@
   
   
   # Vetores para efetuar as operações
-  vetXTrain: .space 18432 # espaço = 576 linhas x 8 valores por linha x 4 bytes por valor
+  xtrain: .space 18432 # espaço = 576 linhas x 8 valores por linha x 4 bytes por valor
   .align 2
-  vetYTrain: .space 6000 # espaço = 576 linhax x 1 valor por linha x 4 bytes por valor
+  ytrain: .space 6000 # espaço = 576 linhax x 1 valor por linha x 4 bytes por valor
   .align 2
-  vetXTest: .space 6144 #espaço = 192 linhax x 8 valores por linha x 4 bytes por valor
-  .align 2
-  vetYTest: .space 1000 #espaço = 192 linhax x 1 valor por linha x 4 bytes por valor
+  xtest: .space 6144 #espaço = 192 linhax x 8 valores por linha x 4 bytes por valor
   .align 2
   
   # utilitários
@@ -38,9 +35,6 @@
   #para ler o arquivo e criar um array de floats
   classeA: .float 1.0
   classeB: .float 0.0
-
-newline: .asciiz " | "
-newlinecomplete: .asciiz "\n========================================\n"
   
 .text
 
@@ -48,27 +42,27 @@ newlinecomplete: .asciiz "\n========================================\n"
 
 main:
   # Carregar xtest
-  la $a0, xtest
+  la $a0, pathXTest
   la $t5, spaceT
   li $t6, 17000
-  la $s0, vetXTest
+  la $s0, xtest
   jal carrega
   sw $t4, XtestLines
   
   
   # Carregar xtrain
-  la $a0, xtrain
+  la $a0, pathXTrain
   la $t5, spaceX
   li $t6, 17000
-  la $s0, vetXTrain
+  la $s0, xtrain
   jal carrega
   sw $t4, XtrainLines
   
   # carregar ytrain
-  la $a0, ytrain
+  la $a0, pathYTrain
   la $t5, spaceY
   li $t6, 10000
-  la $s1, vetYTrain
+  la $s1, ytrain
   jal carregay
   sw $t4, YtrainLines
   
