@@ -104,8 +104,6 @@ main:
     la $s1, ytrain
     jal carregay
     sw $t4, YtrainLines
-  
-    lw $t4, XtestLines	
 
     la $a1, xtrain
     la $a2, ytrain
@@ -114,7 +112,7 @@ main:
     
     la $t0, ytest #salvar a caralha do xtest no registrador
     li $t1, 0 #0 -> inicio do array
-    lw $a1, ytestSize #24 Floats
+    lw $a1, XtrainLines #24 Floats
     jal print
     
     jal saida
@@ -192,7 +190,7 @@ second_loop:
     # Verifica se o contador do segundo loop atingiu 576
     li $t6, 0
     l.s $f0, zero_float
-    li $t3, 576
+    lw $t3, XtrainLines
     beq $t2, $t3, second_loop_end  # Se igual a 576, saia do segundo loop
 	
     # Coloque o código a ser executado durante cada iteração do segundo loop aqui
@@ -266,7 +264,7 @@ saida:
     move $s6, $v0
     
     la $t0 ytest
-    lw $t1 ytestSize
+    lw $t1 XtrainLines
     
     l.s $f14, float1
     
