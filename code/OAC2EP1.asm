@@ -57,15 +57,13 @@ ytestFileName: .asciiz "output/ytest.txt"
 closer_dist: .float 10000000
 closer_class: .float -1
 
-closerlist: #Apagar dps, mas é útil para debugar
+closerlist: #Debuggar
     .space 1536 # 4 Bytes(Float) x Tamanho do Array (1° float: distância, 2° float: classe)
-closerlistSize: .word 192
+closerlistSize: .word 999 #Alterar para o tamanho da entrada que deseja debuggar
 
 newline: .asciiz " | "   # Definição da string de nova linha
 newline2: .asciiz "\n"
 newlinecomplete: .asciiz "\n=============================\n"
-
-file_error_msg: .asciiz "Erro ao abrir o arquivo"
 
 zero_float: .float 0
 infinity: .float 10000000
@@ -110,7 +108,7 @@ main:
     la $a3, xtest
     jal chamaknn
     
-    la $t0, ytest #salvar a caralha do xtest no registrador
+    la $t0, ytest #salvar o xtest no registrador
     li $t1, 0 #0 -> inicio do array
     lw $a1, XtestLines #24 Floats
     jal print
@@ -173,10 +171,12 @@ chamaknn:
 
 first_loop:
     # Verifica se o contador do primeiro loop atingiu 192 (pontos que serão testados)
-    li $t1,192## (((se quiser testar menos linhas para conferir mude aqui))
+    lw $t1, XtestLines#(((se quiser testar menos linhas para conferir mude aqui))
     beq $t0, $t1, first_loop_end  # Se igual a 192, saia do primeiro loop
-    la $a3, xtest #mv inicio do vetor para t5 Xtest 
-    mul $t9, $t0, 32 #multiplica o contador do loop externo(referente tamanho de xTest) por 32 para atualizar a linha a ser comparada
+    la $a3, xtest #mv inicio do vetor para t5 Xtest
+    lw $s3, XtrainColumns
+    mul $t9, $t0, $s3 #multiplica o contador do loop externo(referente tamanho de xTest) por 32 para atualizar a linha a ser comparada
+    mul $t9, $t9, 4 #Multipla por 4 já que cada float oculpa 4Bytes
     add $a3,$a3,$t9 # ponteiro para a linha de teste analisada
     mul $t9, $t0, 4
     la $t7, ytest
@@ -219,7 +219,7 @@ first_loop_end:
 
 #Calcula a menor distancia e da o retorno como a classe em int em $v0
 knn:
-    l.s $f2, 0($a1) # salva 'inicio' de xtrain 
+    l.s $f2, 0($a1) #salva 'inicio' de xtrain 
     l.s $f3, 0($a3) #salva 'inicio' de xtest
     
     sub.s $f1, $f2, $f3
@@ -343,7 +343,7 @@ carrega:
   syscall
   
   li $t4, 1
-  li $s5, 1 ###############################################################################################
+  li $s5, 1
   move $t0, $a1 #possui a string
   lwc1 $f0, zero
   lwc1 $f1, dez #multiplicador/divisor

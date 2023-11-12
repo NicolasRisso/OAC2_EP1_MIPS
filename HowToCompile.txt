@@ -1,0 +1,16 @@
+Como Compilar
+
+A compilação é argumentavelmente simples. Basta executar o Mars4_5.jar (leve em consideração que é necessário ter o java instalado em seu computador) que já vem junto ao pacote do EP.
+Utilizando a ferramenta Mars, deve-se abrir a pasta “code” e então selecionar o arquivo .asm chamado “OAC2EP1”, ficando com o caminho no final de code/OAC2EP1.asm. Após estar com o código aberto,
+basta pressionar F3 (Ou ir na janela Run -> Assemble do Mars) e então pressionar o botão “Run the Current Program” pelo próprio editor.
+
+O resultado será salvo na pasta output em um arquivo txt chamado ytest.txt, que também vem junto do EP (A saída será impressa também no terminal do MARS).
+
+Para trocar a entrada do EP é necessário alterar os arquivos da pasta data, lá devem ser adicionados (ou modificados) os arquivos, xtrain.txt, ytrain.txt e xtest.txt.
+
+IMPORTANTE: É necessário utilizar o Mars4_5.jar que vem junto ao Exercício Programa, tendo em vista que o compilador utiliza como ponto de referência o local em que o seu arquivo .jar está salvo e não
+onde o código .asm está. Caso não deseje utilizar o Mars que vem junto ao projeto, atualize o caminho dessas variáveis abaixo localizadas no .data do arquivo OAC2EP1.asm:
+pathXTrain: .asciiz "C:/caminho/xtrain.txt"
+pathYTrain: .asciiz "C:/caminho/ytrain.txt"
+pathXTest: .asciiz "C:/caminho/xtest.txt."
+ytestFileName: .asciiz "C:/caminho/ytest.txt"
