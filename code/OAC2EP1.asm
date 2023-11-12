@@ -2,9 +2,9 @@
 #---------------------LEITURA------------------------------
 
   # Caminhos dos arquivos
-  pathXTrain: .asciiz "data/xtrain.txt"
-  pathYTrain: .asciiz "data/ytrain.txt"
-  pathXTest: .asciiz "data/xtest.txt"
+  pathXTrain: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/data/xtrain.txt"
+  pathYTrain: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/data/ytrain.txt"
+  pathXTest: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/data/xtest.txt"
   
   # Armazenar o conteúdo
   spaceX: .space 17040
@@ -16,6 +16,8 @@
   YtrainLines: .word 0
   XtrainLines: .word 0
   YtestLines: .word 0
+  
+  XtrainColumns: .word 0
   
   #utilitários
   separador: .asciiz ", "
@@ -48,13 +50,9 @@
 
 ytest:
     .space 768 #4 Bytes(Float) x Tamanho do Array
-    
-xtrainSize: .word 596
-ytrainSize: .word 596
-xtestSize: .word 192
-ytestSize: .word 192
 
-ytestFileName: .asciiz "output/ytest.txt"
+
+ytestFileName: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/output/ytest.txt"
 
 closer_dist: .float 10000000
 closer_class: .float -1
@@ -88,6 +86,8 @@ main:
     la $s0, xtest
     jal carrega
     sw $t4, XtestLines
+    div $s5, $s5, $t4
+    sw $s5, XtrainColumns
   
     # Carregar xtrain
     la $a0, pathXTrain
@@ -117,6 +117,7 @@ main:
     
     jal saida
     
+    lw $t9, XtrainColumns
     li $v0, 10
     syscall
 
@@ -228,11 +229,12 @@ knn:
     addi $a1, $a1, 4
     addi $a3, $a3, 4
     addi $t6, $t6, 4
-    
-    bne $t6, 32, knn #32 = 8 x 4
+    lw $s5, XtrainColumns
+    mul $s5, $s5,4
+    bne $t6, $s5, knn #32 = 8 x 4
    
     sqrt.s $f0, $f0
-    addi $a3, $a3, -32 # volta a posição 0 da linha analisada de Xtest
+    sub $a3, $a3, $s5# volta a posição 0 da linha analisada de Xtest
     c.lt.s $f0, $f5
     bc1t alocarmenor
     jr $ra
@@ -341,6 +343,7 @@ carrega:
   syscall
   
   li $t4, 1
+  li $s5, 1 ###############################################################################################
   move $t0, $a1 #possui a string
   lwc1 $f0, zero
   lwc1 $f1, dez #multiplicador/divisor
@@ -362,6 +365,7 @@ carrega:
     sub $t1, $t1, 48
     mtc1 $t1, $f2
     cvt.s.w $f2, $f2 # o valor está em float
+
   continua:
       addi $t0, $t0, 1
       lb $t1, ($t0)
@@ -389,6 +393,8 @@ carrega:
     mtc1 $t1, $f4
     cvt.s.w $f4, $f4
     div.s $f4, $f4, $f1
+
+
     
     loop_decimal:
       addi $t0, $t0, 1
@@ -427,6 +433,8 @@ carrega:
     
     addi $a0, $a0, 4
     addi $t0, $t0, 1
+    addi $s5, $s5,1
+
     
     j aloca
   
