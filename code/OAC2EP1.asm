@@ -2,9 +2,9 @@
 #---------------------LEITURA------------------------------
 
   # Caminhos dos arquivos
-  pathXTrain: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/data/xtrain.txt"
-  pathYTrain: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/data/ytrain.txt"
-  pathXTest: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/data/xtest.txt"
+  pathXTrain: .asciiz "data/xtrain.txt"
+  pathYTrain: .asciiz "data/ytrain.txt"
+  pathXTest: .asciiz "data/xtest.txt"
   
   # Armazenar o conteúdo
   spaceX: .space 17040
@@ -52,7 +52,7 @@ ytest:
     .space 768 #4 Bytes(Float) x Tamanho do Array
 
 
-ytestFileName: .asciiz "C:/Users/DELL/Documents/USP/Semestre-4/OAC2/OAC2_EP1_MIPS/output/ytest.txt"
+ytestFileName: .asciiz "output/ytest.txt"
 
 closer_dist: .float 10000000
 closer_class: .float -1
