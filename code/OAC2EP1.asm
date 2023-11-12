@@ -409,6 +409,7 @@ carrega:
       beq $t1, 44, proximo
       beq $t1, 10, proximo
       li $t9, 0 #vezes que o loop de divisao deve iteragir
+      li $t7,0
       addi $t7, $t7, 1
       sub $t1, $t1, 48
       mtc1 $t1, $f5
@@ -428,10 +429,10 @@ carrega:
   
   proximo: # +1 linha
     add.s $f7, $f2, $f4
-    li $t1, 4
-    div $a0, $t1
-    mfhi $t1
-    sub $a0, $a0, $t1
+   # li $t1, 4
+    #div $a0, $t1
+    #mfhi $t1
+    #sub $a0, $a0, $t1
     addi $t4, $t4, 1
   aligned:
 
