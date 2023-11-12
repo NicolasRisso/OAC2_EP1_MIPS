@@ -63,7 +63,7 @@ closerlistSize: .word 192
 
 newline: .asciiz " | "   # Definição da string de nova linha
 newline2: .asciiz "\n"
-newlinecomplete: .asciiz "=============================\n"
+newlinecomplete: .asciiz "\n=============================\n"
 
 file_error_msg: .asciiz "Erro ao abrir o arquivo"
 
@@ -112,7 +112,7 @@ main:
     
     la $t0, ytest #salvar a caralha do xtest no registrador
     li $t1, 0 #0 -> inicio do array
-    lw $a1, XtrainLines #24 Floats
+    lw $a1, XtestLines #24 Floats
     jal print
     
     jal saida
@@ -265,8 +265,8 @@ saida:
     
     move $s6, $v0
     
-    la $t0 ytest
-    lw $t1 XtrainLines
+    la $t0, ytest
+    lw $t1, XtestLines
     
     l.s $f14, float1
     
