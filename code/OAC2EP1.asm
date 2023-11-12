@@ -77,6 +77,15 @@ float1: .float 1.0
 
 main:
 
+
+    # Carregar COL xtest
+    la $a0, pathXTest
+    la $t5, spaceT
+    li $t6, 17000
+    la $s0, xtest
+    jal carregaCol
+    sw $t1, XtrainColumns
+	
     # Carregar xtest
     la $a0, pathXTest
     la $t5, spaceT
@@ -84,8 +93,6 @@ main:
     la $s0, xtest
     jal carrega
     sw $t4, XtestLines
-    div $s5, $s5, $t4
-    sw $s5, XtrainColumns
   
     # Carregar xtrain
     la $a0, pathXTrain
@@ -441,7 +448,7 @@ carrega:
   fim:
     addi $t4, $t4, 1
     add.s $f7, $f2, $f4
-    li $t1, 8
+    lw $t1, XtrainColumns
   # Armazenar o valor convertido em vetXTrain
     s.s $f7, 0($a0)
   # Carregar o valor de vetXTrain para $f13
@@ -523,3 +530,63 @@ carregay:
     move $a0, $t8
     syscall
     jr $ra
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    #--------------------------LEITURA---------------------------------
+carregaCol:
+  li $a1, 0
+  li $v0, 13 
+  syscall
+  
+  move $t8, $v0 #salva o endereço do descritor em $t7 para fechar o arquivo posteriormente
+  
+  move $a0, $t8
+  li $v0, 14 
+  move $a1, $t5
+  add $a2, $a2, $t6
+  syscall
+
+  move $t0, $a1 #possui a string
+
+ # Inicializa o contador de vírgulas
+    li $t0, 0                   # Inicializa o índice da string
+    li $t1, 0                   # Inicializa o contador de vírgulas
+
+count_loop:
+    lb $t2, 0($a1)              # Carrega o caractere atual da linha
+
+    # Verifica se é uma quebra de linha ou o final da string
+    beq $t2, 10, end_program    # Se for, encerra o programa
+    beqz $t2, end_program
+
+    # Verifica se é uma vírgula
+    beq $t2, 44, found_comma    # Se for, incrementa o contador
+
+    # Se não for nem quebra de linha nem vírgula, continua para o próximo caractere
+    j continue_loop
+
+found_comma:
+    addi $t1, $t1, 1            # Incrementa o contador de vírgulas
+
+continue_loop:
+    addi $a1, $a1, 1            # Avança para o próximo caractere na linha
+    addi $t0, $t0, 1            # Incrementa o índice
+    j count_loop                # Continua o loop
+
+end_program:
+	addi $t1, $t1, 1 
+	jr $ra
+
